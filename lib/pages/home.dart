@@ -17,6 +17,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String searchQuery = ""; 
+
   @override
   Widget build(BuildContext context) {
     NotesProvider notesProvider = Provider.of<NotesProvider>(context);
@@ -46,55 +48,73 @@ class _HomeState extends State<Home> {
             )
           : SafeArea(
               child: (!notesProvider.notes.isEmpty)
-                  ? GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2),
-                      itemCount: notesProvider.notes.length,
-                      itemBuilder: ((context, index) {
-                        Note currentnote = notesProvider.notes[index];
-                        return GestureDetector(
-                          onTap: (() {
-                            Navigator.push(
-                                context,
-                                CupertinoPageRoute(
-                                    builder: (context) => AddNewNote(
-                                          isUpdate: true,
-                                          note: currentnote,
-                                        )));
-                          }),
-                          onLongPress: (() {
-                            notesProvider.deleteNote(currentnote);
-                          }),
-                          child: Container(
-                            margin: const EdgeInsets.all(5),
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.grey, width: 2),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    currentnote.title!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ),
-                                  SizedBox(
-                                    height: 7,
-                                  ),
-                                  Text(
-                                    currentnote.content!,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 7,
-                                  ),
-                                ]),
+                  ? ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                            decoration: InputDecoration(hintText: "Search"),
+                            onChanged: (val) {setState(() {
+                              searchQuery = val; 
+                            });},
                           ),
-                        );
-                      }))
+                        ),
+                        notesProvider.getFilteredNotes(searchQuery).length>0?
+                        GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            itemCount: notesProvider.getFilteredNotes(searchQuery).length,
+                            itemBuilder: ((context, index) {
+                              Note currentnote = notesProvider.getFilteredNotes(searchQuery)[index];
+                              return GestureDetector(
+                                onTap: (() {
+                                  Navigator.push(
+                                      context,
+                                      CupertinoPageRoute(
+                                          builder: (context) => AddNewNote(
+                                                isUpdate: true,
+                                                note: currentnote,
+                                              )));
+                                }),
+                                onLongPress: (() {
+                                  notesProvider.deleteNote(currentnote);
+                                }),
+                                child: Container(
+                                  margin: const EdgeInsets.all(5),
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey, width: 2),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          currentnote.title!,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 7,
+                                        ),
+                                        Text(
+                                          currentnote.content!,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 7,
+                                        ),
+                                      ]),
+                                ),
+                              );
+                            })):Padding(child: Text("No Notes Found!",textAlign: TextAlign.center,),padding: EdgeInsets.all(8),),
+                      ],
+                    )
                   : Center(
                       child: Text("No Note to show"),
                     )),

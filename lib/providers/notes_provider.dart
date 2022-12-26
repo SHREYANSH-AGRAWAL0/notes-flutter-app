@@ -10,6 +10,10 @@ class NotesProvider with ChangeNotifier {
     fetchNotes();
   }
 
+  List<Note> getFilteredNotes(String searchQuery) {
+    return notes.where((element) => element.title!.toLowerCase().contains(searchQuery.toLowerCase())||element.content!.toLowerCase().contains(searchQuery.toLowerCase())).toList(); 
+  }
+
   void addNote(Note note) {
     notes.add(note);
     notifyListeners();
