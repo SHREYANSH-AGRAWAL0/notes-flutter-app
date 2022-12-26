@@ -9,7 +9,7 @@ import '../models/note.dart';
 
 class AddNewNote extends StatefulWidget {
   final bool isUpdate;
-  final Note? note;
+   Note? note;
   AddNewNote({super.key, required this.isUpdate, this.note});
 
   @override
@@ -36,9 +36,15 @@ class _AddNewNoteState extends State<AddNewNote> {
   }
 
   void updateNote() {
+    Note updatedNote = Note(
+      id: widget.note!.id,
+      userid: "ashreyansh47@gmail.com",
+        title: titleController.text,
+        content: contentController.text,
+        dateadded: DateTime.now());
     widget.note!.title = titleController.text;
     widget.note!.content = contentController.text;
-    Provider.of<NotesProvider>(context, listen: false).updateNote(widget.note!);
+    Provider.of<NotesProvider>(context, listen: false).updateNote(updatedNote);
     Navigator.pop(context);
   }
 

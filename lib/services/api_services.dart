@@ -16,7 +16,7 @@ class ApiService {
 
   static Future<void> deleteNote(Note note) async {
     Uri requestUri = Uri.parse("$_baseUrl/delete/${note.id}");
-    var response = await http.delete(requestUri, body: note.toMap());
+    var response = await http.delete(requestUri);
     var decoded = jsonDecode(response.body);
     log(decoded.toString());
   }
