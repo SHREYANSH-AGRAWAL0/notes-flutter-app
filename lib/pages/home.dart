@@ -27,7 +27,10 @@ class _HomeState extends State<Home> {
           Navigator.push(
               context,
               CupertinoPageRoute(
-                  fullscreenDialog: true, builder: (context) => AddNewNote()));
+                  fullscreenDialog: true,
+                  builder: (context) => AddNewNote(
+                        isUpdate: false,
+                      )));
         },
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all((Radius.circular(15)))),
@@ -37,34 +40,54 @@ class _HomeState extends State<Home> {
         title: Text("Notes"),
         centerTitle: true,
       ),
-      body: SafeArea(
-          child: GridView.builder(
+      body: notesProvider.isloading? Center(child: CircularProgressIndicator(),): SafeArea(
+          child:(!notesProvider.notes.isEmpty)? GridView.builder(
               gridDelegate:
                   SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
               itemCount: notesProvider.notes.length,
               itemBuilder: ((context, index) {
                 Note currentnote = notesProvider.notes[index];
-                return Container(
-                  margin: const EdgeInsets.all(5),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 2),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          currentnote.title!,maxLines: 1,overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                        SizedBox(
-                          height: 7,
-                        ),
-                        Text(currentnote.content!,overflow: TextOverflow.ellipsis,maxLines: 7,),
-                      ]),
+                return GestureDetector(
+                  onTap: (() {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => AddNewNote(
+                                  isUpdate: true,
+                                  note: currentnote,
+                                )));
+                  }),
+                  onLongPress: (() {
+                    notesProvider.deleteNote(currentnote);
+                  }),
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey, width: 2),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            currentnote.title!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Text(
+                            currentnote.content!,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 7,
+                          ),
+                        ]),
+                  ),
                 );
-              }))),
+              })):Center(child: Text("No Note to show"),)),
     );
   }
 }
