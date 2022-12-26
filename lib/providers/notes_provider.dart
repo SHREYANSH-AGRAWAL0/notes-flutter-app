@@ -4,7 +4,7 @@ import 'package:notes_app/services/api_services.dart';
 
 class NotesProvider with ChangeNotifier {
   List<Note> notes = [];
-  bool isloading = true; 
+  bool isloading = true;
 
   NotesProvider() {
     fetchNotes();
@@ -34,7 +34,7 @@ class NotesProvider with ChangeNotifier {
 
   void fetchNotes() async {
     notes = await ApiService.fetchNotes("ashreyansh47@gmail.com");
-    isloading = false; 
+    isloading = false;
     notifyListeners();
   }
 }

@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
           initialRoute: "/",
           routes: {
             "/": (context) => Home(),
-            "/addnewnote": (context) => AddNewNote(isUpdate: true,)
+            "/addnewnote": (context) => AddNewNote(
+                  isUpdate: true,
+                )
           },
         ));
   }

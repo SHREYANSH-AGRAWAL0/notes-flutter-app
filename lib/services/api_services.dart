@@ -30,6 +30,6 @@ class ApiService {
       Note newNote = Note.fromMap(noteMap);
       notes.add(newNote);
     }
-    return notes; 
+    return notes;
   }
 }

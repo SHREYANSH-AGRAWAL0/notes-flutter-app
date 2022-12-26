@@ -5,7 +5,7 @@ class Note {
   String? title;
   String? content;
   DateTime? dateadded;
-  Note({this.id, this.userid, this.title, this.content, this.dateadded}); 
+  Note({this.id, this.userid, this.title, this.content, this.dateadded});
 
   Map<String, dynamic> toMap() {
     return {
@@ -23,7 +23,7 @@ class Note {
       userid: map["userid"],
       title: map["title"],
       content: map["content"],
-      dateadded:map["dateadded"],
+      dateadded: map["dateadded"],
     );
   }
 }
