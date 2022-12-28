@@ -24,8 +24,8 @@ class _LoginPageState extends State<LoginPage> {
               Image.asset('lib/assets/myimage.jpg'),
               Container(
                 padding: EdgeInsets.all(30),
-                margin: EdgeInsets.only(top:loginOrsignup? 300:370),
-                height: 500,
+                margin: EdgeInsets.only(top:loginOrsignup? 300:360),
+                height: loginOrsignup? 500:440,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
