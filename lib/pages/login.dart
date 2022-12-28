@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:notes_app/utils/routes.dart';
+import 'package:notes_app/pages/home.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../widgets/customContainer.dart';
-import '../widgets/customTextFormField.dart';
 
 bool loginOrsignup = false;
 
@@ -16,15 +15,23 @@ class LoginPage extends StatefulWidget {
 }
 
 final _loginKey = GlobalKey<FormState>();
-
-void loginUser() {
-  if(_loginKey.currentState!.validate()){
-   
-  }
-}
-
+final _signUpKey = GlobalKey<FormState>();
 
 class _LoginPageState extends State<LoginPage> {
+  void moveToHome(BuildContext context) async {
+    if (_loginKey.currentState!.validate()) {
+      await Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+    }
+  }
+
+  void signUpUser(BuildContext context) async {
+    if (_signUpKey.currentState!.validate()) {
+      await Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => Home()));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
               Image.asset('lib/assets/myimage.jpg'),
               Container(
                 padding: EdgeInsets.all(30),
-                margin: EdgeInsets.only(top: loginOrsignup ? 300 : 360),
-                height: loginOrsignup ? 500 : 440,
+                margin: EdgeInsets.only(top: loginOrsignup ? 240 : 320),
+                height: loginOrsignup ? 560 : 480,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -86,77 +93,114 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: 15,
                           ),
-                          TextFormField(
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                hintText: "xyz",
-                                labelText: "Name",
-                                suffixIcon: Icon(Icons.abc),
-                                labelStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2))),
-                          ),
+                          Form(
+                              key: _signUpKey,
+                              child: Column(
+                                children: [
+                                  TextFormField(
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Name can not be empty";
+                                      }
+                                    },
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                        hintText: "xyz",
+                                        labelText: "Name",
+                                        suffixIcon: Icon(Icons.abc),
+                                        labelStyle: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2))),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    validator: ((value) {
+                                      if (value == null || value.isEmpty) {
+                                        return "Enter Email";
+                                      }
+                                      final bool emailValid = RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                          .hasMatch(value.toString());
+                                      if (!emailValid) {
+                                        return "Email is not in correct format";
+                                      }
+                                      return null;
+                                    }),
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                        hintText: "xyz@gmail.com",
+                                        labelText: "Email",
+                                        suffixIcon: Icon(Icons.email),
+                                        labelStyle: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2))),
+                                  ),
+                                  SizedBox(
+                                    height: 15,
+                                  ),
+                                  TextFormField(
+                                    validator: ((value) {
+                                      if (value!.length < 6) {
+                                        return "Length of password is can not be less than 6";
+                                      }
+                                    }),
+                                    cursorColor: Colors.black,
+                                    decoration: InputDecoration(
+                                        hintText: "******",
+                                        labelText: "Password",
+                                        suffixIcon: Icon(Icons.password),
+                                        labelStyle: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide: BorderSide(width: 2))),
+                                  ),
+                                ],
+                              )),
                           SizedBox(
                             height: 15,
                           ),
-                          TextFormField(
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                hintText: "xyz@gmail.com",
-                                labelText: "Email",
-                                suffixIcon: Icon(Icons.email),
-                                labelStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2))),
+                          GestureDetector(
+                            onTap: () => signUpUser(context),
+                            child: Center(
+                                child: Container(
+                              // ignore: sort_child_properties_last
+                              child: "Sign Up"
+                                  .text
+                                  .xl
+                                  .color(Colors.white)
+                                  .bold
+                                  .make()
+                                  .centered(),
+                              decoration: ShapeDecoration(
+                                shape: StadiumBorder(),
+                                color: Colors.blue,
+                              ),
+                              height: 50,
+                              width: 300,
+                            )),
                           ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          TextFormField(
-                            cursorColor: Colors.black,
-                            decoration: InputDecoration(
-                                hintText: "******",
-                                labelText: "Password",
-                                suffixIcon: Icon(Icons.password),
-                                labelStyle:
-                                    TextStyle(fontWeight: FontWeight.bold),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(width: 2))),
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Center(
-                              child: Container(
-                            // ignore: sort_child_properties_last
-                            child: "Sign Up"
-                                .text
-                                .xl
-                                .color(Colors.white)
-                                .bold
-                                .make()
-                                .centered(),
-                            decoration: ShapeDecoration(
-                              shape: StadiumBorder(),
-                              color: Colors.blue,
-                            ),
-                            height: 50,
-                            width: 300,
-                          )),
                           SizedBox(
                             height: 10,
                           ),
@@ -255,26 +299,29 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(
                             height: 20,
                           ),
-                          Center(
-                              child: GestureDetector(
-                            onTap: (() => loginUser()),
-                            child: Container(
-                              // ignore: sort_child_properties_last
-                              child: "Continue"
-                                  .text
-                                  .xl
-                                  .color(Colors.white)
-                                  .bold
-                                  .make()
-                                  .centered(),
-                              decoration: ShapeDecoration(
-                                shape: StadiumBorder(),
-                                color: Colors.blue,
+                          GestureDetector(
+                            onTap: () {
+                              moveToHome(context);
+                            },
+                            child: Center(
+                              child: Container(
+                                // ignore: sort_child_properties_last
+                                child: "Continue"
+                                    .text
+                                    .xl
+                                    .color(Colors.white)
+                                    .bold
+                                    .make()
+                                    .centered(),
+                                decoration: ShapeDecoration(
+                                  shape: StadiumBorder(),
+                                  color: Colors.blue,
+                                ),
+                                height: 50,
+                                width: 300,
                               ),
-                              height: 50,
-                              width: 300,
                             ),
-                          )),
+                          ),
                           SizedBox(
                             height: 20,
                           ),
