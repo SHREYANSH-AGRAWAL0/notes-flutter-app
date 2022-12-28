@@ -5,21 +5,22 @@ import 'package:flutter/material.dart';
 class customTextFormField extends StatelessWidget {
   const customTextFormField(
       {super.key,
-      required this.hinttext,
-      required this.labeltext,
-      required this.SuffixIcon});
+      required this.suffixIcon,
+      required this.hintText,
+      required this.labelText});
 
-  final Icon SuffixIcon;
-  final String hinttext;
-  final String labeltext;
+  final Icon suffixIcon;
+  final String hintText;
+  final String labelText;
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       cursorColor: Colors.black,
       decoration: InputDecoration(
-          suffixIcon: SuffixIcon,
-          hintText: hinttext,
-          labelText: labeltext,
+          suffixIcon: suffixIcon,
+          hintText: hintText,
+          labelText: labelText,
           labelStyle: TextStyle(fontWeight: FontWeight.bold),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
