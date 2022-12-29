@@ -1,11 +1,10 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:http/http.dart' as http;
 import '../models/user.dart';
 
 class UserService {
-  static final String _baseUri = "https://notes-api-4a3c.onrender.com/users";
+  static const String _baseUri = "https://notes-api-4a3c.onrender.com/users";
 
   static Future<User> signUp(User user) async {
     Uri responseUri = Uri.parse("$_baseUri/addUser");
