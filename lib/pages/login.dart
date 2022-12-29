@@ -18,6 +18,18 @@ final _loginKey = GlobalKey<FormState>();
 final _signUpKey = GlobalKey<FormState>();
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+  }
+
   void moveToHome(BuildContext context) async {
     if (_loginKey.currentState!.validate()) {
       await Navigator.pushReplacement(
@@ -98,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: Column(
                                 children: [
                                   TextFormField(
+                                    controller: _usernameController,
                                     validator: (value) {
                                       if (value!.isEmpty) {
                                         return "Name can not be empty";
@@ -136,6 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                                       return null;
                                     }),
                                     cursorColor: Colors.black,
+                                    controller: _emailController,
                                     decoration: InputDecoration(
                                         hintText: "xyz@gmail.com",
                                         labelText: "Email",
@@ -161,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     }),
                                     cursorColor: Colors.black,
+                                    controller: _passwordController,
                                     decoration: InputDecoration(
                                         hintText: "******",
                                         labelText: "Password",
@@ -254,6 +269,7 @@ class _LoginPageState extends State<LoginPage> {
                                       return null;
                                     }),
                                     cursorColor: Colors.black,
+                                    controller: _emailController,
                                     decoration: InputDecoration(
                                         suffixIcon: Icon(Icons.remove_red_eye),
                                         hintText: "abc@gmail.com",
@@ -279,6 +295,7 @@ class _LoginPageState extends State<LoginPage> {
                                       }
                                     }),
                                     cursorColor: Colors.black,
+                                    controller: _passwordController,
                                     decoration: InputDecoration(
                                         hintText: "********",
                                         labelText: "Enter Password",
