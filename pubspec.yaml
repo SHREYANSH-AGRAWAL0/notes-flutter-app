@@ -57,8 +57,8 @@ dev_dependencies:
   
 
 flutter_native_splash:
-  color: "#42a5f5"
-  image: lib/assets/myimage.jpg
+  color: "#ffffff"
+  image: lib/assets/notes_splash.jpg
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -73,6 +73,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/myimage.jpg
+    - lib/assets/notes_splash.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
