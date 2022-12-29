@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/pages/home.dart';
 import 'package:notes_app/pages/login.dart';
