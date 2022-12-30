@@ -22,7 +22,7 @@ class NotesProvider with ChangeNotifier {
 
   void updateNote(Note note) {
     int indexofNote =
-        notes.indexOf(notes.firstWhere((element) => element.id == note.id));
+    notes.indexOf(notes.firstWhere((element) => element.id == note.id));
     notes[indexofNote] = note;
     notifyListeners();
     ApiService.addNote(note);

@@ -1,33 +1,30 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'dart:convert';
 
 class User {
   String? email;
-  String? phone;
   String? password;
-  String? fullname; 
+  String? name; 
   User({
     this.email,
-    this.phone,
     this.password,
-    this.fullname,
+    this.name,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'email': email,
-      'phone': phone,
       'password': password,
-      'fullname': fullname,
+      'name': name,
     };
   }
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      email: map['email'] != null ? map['email'] as String : null,
-      phone: map['phone'] != null ? map['phone'] as String : null,
-      password: map['password'] != null ? map['password'] as String : null,
-      fullname: map['fullname'] != null ? map['fullname'] as String : null,
+      email: map['email'],
+      password: map['password'],
+      name: map['name'],
     );
   }
 

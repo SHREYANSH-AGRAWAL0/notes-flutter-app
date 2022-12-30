@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:notes_app/models/user.dart';
 import 'package:notes_app/pages/home.dart';
+import 'package:notes_app/services/user_services.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../widgets/customContainer.dart';
 
@@ -21,6 +25,8 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  String message = "Hello";
+  var loginResponse;
 
   @override
   void dispose() {
@@ -30,8 +36,18 @@ class _LoginPageState extends State<LoginPage> {
     _usernameController.dispose();
   }
 
-  void moveToHome(BuildContext context) async {
+  void signInUser(BuildContext context) async {
     if (_loginKey.currentState!.validate()) {
+      User user = User(
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _usernameController.text);
+      loginResponse = await UserService.signIn(user);
+      if (loginResponse is String) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(loginResponse)));
+      }
+
       await Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
     }
@@ -39,8 +55,16 @@ class _LoginPageState extends State<LoginPage> {
 
   void signUpUser(BuildContext context) async {
     if (_signUpKey.currentState!.validate()) {
-      await Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home()));
+      User currentUser = User(
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _usernameController.text);
+      message = await UserService.signUp(currentUser);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+
+      // ignore: use_build_context_synchronously
+
     }
   }
 
@@ -228,6 +252,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               GestureDetector(
                                 onTap: () {
+                                  signUpUser(context);
                                   setState(() {
                                     loginOrsignup = !loginOrsignup;
                                   });
@@ -318,7 +343,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              moveToHome(context);
+                              signInUser(context);
                             },
                             child: Center(
                               child: Container(
