@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => NotesProvider())
         ],
         child: MaterialApp(
-          initialRoute: MyRoutes.homeRoute,
+          initialRoute: MyRoutes.login,
           routes: {
             MyRoutes.login: (context) => LoginPage(),
             MyRoutes.homeRoute: (context) => Home(),
