@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:notes_app/localstorage/user_details.dart';
 import 'package:notes_app/models/user.dart';
 import 'package:notes_app/pages/home.dart';
 import 'package:notes_app/services/user_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../widgets/customContainer.dart';
 
@@ -37,6 +37,11 @@ class _LoginPageState extends State<LoginPage> {
     _usernameController.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void signInUser(BuildContext context) async {
     if (_loginKey.currentState!.validate()) {
       User user = User(
@@ -48,12 +53,13 @@ class _LoginPageState extends State<LoginPage> {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(loginResponse)));
       }
-
       User newuser = User.fromMap(loginResponse);
-
       log('email is ${newuser.email.toString()} and the name is ${newuser.name.toString()}');
       LocalUser.save("email", newuser.email.toString());
       LocalUser.save("name", newuser.name.toString());
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
       await Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
     }

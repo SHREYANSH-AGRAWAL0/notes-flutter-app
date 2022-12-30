@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:notes_app/localstorage/user_details.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/pages/add_new_note.dart';
 import 'package:notes_app/providers/notes_provider.dart';
+import 'package:notes_app/utils/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -39,6 +42,15 @@ class _HomeState extends State<Home> {
         child: Icon(Icons.add),
       ),
       appBar: AppBar(
+        leading: ElevatedButton(
+          onPressed: () async {
+            LocalUser.clear(); 
+            final prefs = await SharedPreferences.getInstance();
+            prefs.setBool('isLoggedIn', false);
+            Navigator.pushReplacementNamed(context, MyRoutes.login); 
+          },
+          child: Icon(Icons.logout),
+        ),
         title: Text("Notes"),
         centerTitle: true,
       ),
