@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:notes_app/localstorage/user_details.dart';
 import 'package:notes_app/models/user.dart';
 import 'package:notes_app/pages/home.dart';
 import 'package:notes_app/services/user_services.dart';
@@ -48,6 +49,11 @@ class _LoginPageState extends State<LoginPage> {
             .showSnackBar(SnackBar(content: Text(loginResponse)));
       }
 
+      User newuser = User.fromMap(loginResponse);
+
+      log('email is ${newuser.email.toString()} and the name is ${newuser.name.toString()}');
+      LocalUser.save("email", newuser.email.toString());
+      LocalUser.save("name", newuser.name.toString());
       await Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => Home()));
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes_app/localstorage/user_details.dart';
 import 'package:notes_app/models/note.dart';
 import 'package:notes_app/services/api_services.dart';
 
@@ -11,7 +12,11 @@ class NotesProvider with ChangeNotifier {
   }
 
   List<Note> getFilteredNotes(String searchQuery) {
-    return notes.where((element) => element.title!.toLowerCase().contains(searchQuery.toLowerCase())||element.content!.toLowerCase().contains(searchQuery.toLowerCase())).toList(); 
+    return notes
+        .where((element) =>
+            element.title!.toLowerCase().contains(searchQuery.toLowerCase()) ||
+            element.content!.toLowerCase().contains(searchQuery.toLowerCase()))
+        .toList();
   }
 
   void addNote(Note note) {
@@ -22,7 +27,7 @@ class NotesProvider with ChangeNotifier {
 
   void updateNote(Note note) {
     int indexofNote =
-    notes.indexOf(notes.firstWhere((element) => element.id == note.id));
+        notes.indexOf(notes.firstWhere((element) => element.id == note.id));
     notes[indexofNote] = note;
     notifyListeners();
     ApiService.addNote(note);
@@ -37,7 +42,8 @@ class NotesProvider with ChangeNotifier {
   }
 
   void fetchNotes() async {
-    notes = await ApiService.fetchNotes("ashreyansh47@gmail.com");
+    String currentUser = await LocalUser.get("email"); 
+    notes = await ApiService.fetchNotes(currentUser);
     isloading = false;
     notifyListeners();
   }

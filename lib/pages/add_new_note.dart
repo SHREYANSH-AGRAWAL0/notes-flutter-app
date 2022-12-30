@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/providers/notes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
-
+import '../localstorage/user_details.dart';
 import '../models/note.dart';
 
 class AddNewNote extends StatefulWidget {
@@ -23,10 +23,10 @@ class _AddNewNoteState extends State<AddNewNote> {
 
   TextEditingController contentController = TextEditingController();
 
-  void addNewNote() {
+  void addNewNote() async {
     Note newNote = Note(
         id: Uuid().v1(),
-        userid: "ashreyansh47@gmail.com",
+        userid: await LocalUser.get("email"),
         title: titleController.text,
         content: contentController.text,
         dateadded: DateTime.now());
@@ -35,10 +35,10 @@ class _AddNewNoteState extends State<AddNewNote> {
     Navigator.pop(context);
   }
 
-  void updateNote() {
+  void updateNote() async {
     Note updatedNote = Note(
         id: widget.note!.id,
-        userid: "ashreyansh47@gmail.com",
+        userid: await LocalUser.get("email"),
         title: titleController.text,
         content: contentController.text,
         dateadded: DateTime.now());
