@@ -15,7 +15,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final bool isLoggedIn; 
+  final bool isLoggedIn;
   const MyApp({super.key, required this.isLoggedIn});
 
   @override
@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => NotesProvider())
         ],
         child: MaterialApp(
-          initialRoute: isLoggedIn ? MyRoutes.homeRoute : MyRoutes.login ,
+          initialRoute: isLoggedIn ? MyRoutes.homeRoute : MyRoutes.login,
           routes: {
             MyRoutes.login: (context) => LoginPage(),
             MyRoutes.homeRoute: (context) => Home(),

@@ -12,6 +12,6 @@ class LocalUser {
   }
 
   static Future<void> clear() async {
-    await storage.deleteAll(); 
+    await storage.deleteAll();
   }
 }

@@ -21,10 +21,23 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String searchQuery = "";
+  String name = "User";
+  @override
+  void initState() {
+    // TODO: implement initState
+    getname();
+    super.initState();
+  }
+
+  Future<void> getname() async => name = await LocalUser.get("name");
 
   @override
   Widget build(BuildContext context) {
     NotesProvider notesProvider = Provider.of<NotesProvider>(context);
+
+    Future<void> initState() async {
+      super.initState();
+    }
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -39,20 +52,24 @@ class _HomeState extends State<Home> {
         },
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all((Radius.circular(15)))),
-        child: Icon(Icons.add),
+        child: Icon(Icons.edit),
       ),
       appBar: AppBar(
-        leading: ElevatedButton(
-          onPressed: () async {
-            LocalUser.clear(); 
-            final prefs = await SharedPreferences.getInstance();
-            prefs.setBool('isLoggedIn', false);
-            Navigator.pushReplacementNamed(context, MyRoutes.login); 
-          },
-          child: Icon(Icons.logout),
+        title: Row(
+          children: [
+            Text('Welcome ${name}'),
+            Spacer(),
+            ElevatedButton(
+              onPressed: () async {
+                LocalUser.clear();
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setBool('isLoggedIn', false);
+                Navigator.pushReplacementNamed(context, MyRoutes.login);
+              },
+              child: Icon(Icons.logout),
+            ),
+          ],
         ),
-        title: Text("Notes"),
-        centerTitle: true,
       ),
       body: notesProvider.isloading
           ? Center(
@@ -65,7 +82,8 @@ class _HomeState extends State<Home> {
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
-                            decoration: InputDecoration(hintText: "Search"),
+                            style: TextStyle(fontSize: 20),
+                            decoration: InputDecoration(hintText: "Search",suffixIcon: Icon(Icons.search) ),
                             onChanged: (val) {
                               setState(() {
                                 searchQuery = val;
